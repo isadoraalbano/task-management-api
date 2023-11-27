@@ -1,0 +1,33 @@
+version: '3'
+services:
+    mysql:
+        container_name: mysql
+        image: mysql:5.7
+        environment:
+            MYSQL_DATABASE: 'tasks'
+            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_HOST: localhost
+        ports:
+            - '3306:3306'
+        volumes: 
+            - /mysql:/var/lib/mysql
+        networks:
+            - mysql-network
+    app:
+        build: .
+        container_name: api
+        env_file:
+            - .env
+        environment:
+            - DATABASE_URL=mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@mysql:${MYSQL_PORT}/${MYSQL_DATABASE}?connect_timeout=40&pool_timeout=30&socket_timeout=40&schema=public
+        depends_on: 
+            - mysql
+        ports:
+          - "3000:3000"
+        volumes:
+            - .:/app
+        networks:
+            - mysql-network
+networks:
+    mysql-network:
+        driver: bridge
