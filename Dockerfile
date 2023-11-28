@@ -16,6 +16,7 @@ RUN npm install
 
 RUN npm run build
 
+RUN npm i -g prisma
 RUN npx prisma migrate deploy
 
 COPY . ./
