@@ -27,4 +27,4 @@ RUN git config --global core.autocrlf false
 
 RUN ["chmod", "+x", "/app/entrypoint.sh"]
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+CMD ["/app/entrypoint.sh"]
